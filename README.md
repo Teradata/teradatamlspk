@@ -11,11 +11,36 @@ Copyright 2024, Teradata. All Rights Reserved.
 ### Table of Contents
 * [Release Notes](#release-notes)
 * [Installation and Requirements](#installation-and-requirements)
-* [Usage](#Usage-of-the-teradatamlspk-Package)
+* [Using the Teradata Python Package](#using-the-teradata-Python-package)
 * [Documentation](#documentation)
 * [License](#license)
 
 ## Release Notes:
+#### teradatamlspk 20.00.00.01
+* ##### teradatamlspk DataFrame
+  * `write()` - Supports writing the DataFrame to local file system or to Vantage or to cloud storage.
+  * `writeTo()` - Supports writing the DataFrame to a Vantage table.
+  * `rdd` - Returns the same DataFrame.
+* ##### teradatamlspk DataFrameColumn a.k.a. ColumnExpression
+  * `desc_nulls_first` - Returns a sort expression based on the descending order of the given column name, and null values appear before non-null values.
+  * `desc_nulls_last` - Returns a sort expression based on the descending order of the given column name, and null values appear after non-null values.
+  * `asc_nulls_first` - Returns a sort expression based on the ascending order of the given column name, and null values appear before non-null values.
+  * `asc_nulls_last` - Returns a sort expression based on the ascending order of the given column name, and null values appear after non-null values.
+* ##### Updates
+  * `DataFrame.fillna()` and `DataFrame.na.fill()` now supports input arguments of the same data type or their types must be compatible. 
+  * `DataFrame.agg()` and `GroupedData.agg()` function supports Column as input and '*' for 'count'.
+  * `DataFrameColumn.cast()` and `DataFrameColumn.alias()` now accepts string literal which are case insensitive.
+  * Optimised performance for `DataFrame.show()`  
+  * Classification Summary, TrainingSummary object and MulticlassClassificationEvaluator now supports `weightedTruePositiveRate` and `weightedFalsePositiveRate` metric.
+  * Arithmetic operations can be performed on window aggregates.
+* ##### Bug Fixes
+  * `DataFrame.head()` returns a list when n is 1.
+  * `DataFrame.union()` and `DataFrame.unionAll()` now performs union of rows based on columns position.
+  * `DataFrame.groupBy()` and `DataFrame.groupby()` now accepts columns as positional arguments as well, for example `df.groupBy("col1", "col2")`.
+  * MLlib Functions attribute `numClasses` and `intercept` now return value.
+  * Appropriate error is raised if invalid file is passed to `pyspark2teradataml`.
+  * `when` function accepts Column also along with literal for `value` argument. 
+
 #### teradatamlspk 20.0.0.0
 * `teradatamlspk 20.0.0.0` is the initial release version. Please refer to the teradatamlspk User Guide for the available API's and their functionality.
 
@@ -52,7 +77,7 @@ Platform       | Command
 macOS/Linux    | `pip install --no-cache-dir -U teradatamlspk`
 Windows        | `py -3 -m pip install --no-cache-dir -U teradatamlspk`
 
-## Usage of the teradatamlspk Package
+## Usage the `teradatamlspk` Package
 
 `teradatamlspk` has a utility `pyspark2teradataml` which takes input as your PySpark script, analyzes it and generates 2 files as below:
   1. HTML file - Created in the same directory where users PySpark script resides with name as `<your pyspark script name>_tdmlspk.html`. This file contains the script conversion report. Based on the report user can take the action on the generated scripts.
