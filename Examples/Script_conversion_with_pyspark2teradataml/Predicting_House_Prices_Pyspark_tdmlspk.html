@@ -1,0 +1,287 @@
+
+        <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8"/>
+                <title>pyspark2teradataml</title>
+                <style>
+                    body {
+                      font-family: Helvetica, Arial, sans-serif;
+                      font-size: 12px;
+                      position: relative;
+                      float: left;
+                      width: 100%;
+                      margin:0;
+                  }
+            
+                  .heading {
+              font-size: 30px;
+              position: relative;
+              float: left;
+              width: 100%;
+              text-align: center;
+              color: black;
+              font-weight: bold;
+              margin-top: 25px;
+              margin-bottom: 25px;
+            }
+            
+                  .imp_notes {
+              font-size: 20px;
+              position: relative;
+              float: left;
+              width: 100%;
+              text-align: left;
+              color: black;
+              font-weight: bold;
+              margin-top: 25px;
+              margin-bottom: 25px;
+            }
+            
+            .how_to_interpret {
+              font-size: 12px;
+              position: relative;
+              float: left;
+              width: 100%;
+              text-align: left;
+              color: black;
+              font-weight: bold;
+              margin-top: 25px;
+              margin-bottom: 25px;
+            }
+            
+            p {
+              color: black;
+            }
+            
+            a {
+              color: #999;
+            }
+            
+            
+            table {
+              /* border: #E1EcF4 1px solid; */
+              border: #E1EcF4 1px solid;
+              border-collapse: collapse;
+              margin-top: 35px;
+              margin-left: 5px;
+              margin-right: 5px;
+              margin-bottom: 5px;
+            }
+            
+            tr {
+              border-bottom: #E1EcF4 1px solid;
+              height:35px;
+              /* padding-top: 5px;
+              padding-bottom: 5px; */
+            }
+            
+            .orange_background {
+              color: chocolate;
+            }
+            
+            th {
+              padding-left:5px;
+              vertical-align: middle;
+              padding-right:5px;
+              text-align:center;
+              background-color:#E1EcF4; 
+              color:#6A737C; 
+              font-size:13px;
+              border-right: #ddd 1px solid;
+            }
+            
+            td {
+              border-right: #E1EcF4 1px solid;
+              padding-left:5px;
+              vertical-align: middle;
+              padding-right:5px;
+              text-align:left;
+              padding-bottom: 5px;
+              padding-top: 5px;
+            }
+            
+            .not_supported {
+              color: red;
+            }
+            
+            .partially_supported {
+              color: blue;
+            }
+            
+            .notification {
+              color: black;
+            }
+            
+            </style>
+              </head>
+              <body>
+                  <span class="heading"> pyspark2teradataml - Predicting_House_Prices_Pyspark.py </span>
+                  <span class="imp_notes">Important Notes: </span>
+                    <ul>
+                  
+                    <li>Refer user guide and supportability matrix for ML functions. </li>
+					<li>Some functions are not supported however they are supported with manual code changes. Look at the section 'Examples' in the user guide to know more details.  </li>
+					<li>ML Functions accepts multiple columns for arguments. Hence, no need to pass vectors, update the script to pass multiple columns. </li>
+					<li>RDD API's are not applicable to Vantage. Make use of DataFrame API's. </li>
+					<li>Columns are case sensitive in teradatamlspk and they are case insensitive in PySpark. Convert the column names to appropriate case while converting the code. </li>
+                    <li>DataFrame.rdd returns same DataFrame as RDD is not applicable to Vantage. Hence use DataFrame API's and do not use RDD API's. </li>
+                    <li>pyspark2teradataml does not modify the SQL statements. Users are advised to manually update the SQL statements if the corresponding SQL statement is not valid in Vantage. </li>
+                    <li>teradatamlspk timezone strings don't consider Daylight Saving Time(DST). Users are advised to use teradata vantage timezone strings for DST consideration.</li>
+                    <li>DataFrame.sort(), DataFrame.orderBy() </li> 
+                    <ul>
+                    <li>Does not propogate the changes to next API. </li> 
+                    <li>To get top n elements or bottom n elements, use ranking with window aggregates and filter it. </li>
+                    <li>ColumnExpressions are not supported. Only Column names are supported.</li>
+                    </ul>
+                  </ul>
+                  <h3>Text in below table in any of below three colors. Every color has significance as explained below: </h3>
+                  <ul>
+                  
+                    <li><span style="color: red; text-decoration: underline;">red</span>: These API's do not have functionality in teradatamlspk. User need to achieve the functionality through some other way. </li>
+                    <li><span style="color: blue; text-decoration: underline;">blue </span>: These API's have functionality but there may be some difference in functionality when compared with PySpark. Notes specifies what is the exact difference so user should change it manually. </li>
+                    <li><span style="color: black; text-decoration: underline;">black </span>: This is for a notification to user. <b> No action required. </b> </li>
+                  </ul>
+                  <div id="html_table">
+                    
+        <table>
+          <tr >
+
+              <th>SNO</th>
+              
+              <th>Line No</th>
+          
+              <th>Object Name</th>
+              
+              <th>Notes</th>
+          </tr>
+          
+          
+        <tr>      
+
+              <td class="notification">1</td>
+
+              <td class="notification">32</td>
+              
+              <td class="notification">RegressionMetrics</td>
+              
+              <td class="notification">RegressionMetrics uses RDD for evaluating the metrics. User should use RegressionEvaluator as it runs on DataFrame instead of RDD.<span style='font-style: italic;'> Import is ignored. </span></td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="notification">2</td>
+
+              <td class="notification">90</td>
+              
+              <td class="notification">SQLContext</td>
+              
+              <td class="notification">SQLContext methods applicable for Vantage will work. Not applicable methods will throw error. Remove such methods.</td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="notification">3</td>
+
+              <td class="notification">121</td>
+              
+              <td class="notification">cache</td>
+              
+              <td class="notification">Not applicable for Teradata. Hence API returns the same DataFrame.</td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="partially_supported">4</td>
+
+              <td class="partially_supported">121</td>
+              
+              <td class="partially_supported">read.csv</td>
+              
+              <td class="partially_supported"><li style='margin:0 0 5px 0;'> read.csv can read the file from local file system or from cloud file system. </li><li style='margin:0 0 5px 0;'> If file is in cloud file system, user should pass parameters required for teradataml ReadNOS. Placeholders are kept for this in the converted file. User can replace those placeholders with actual values. </li><li style='margin:0 0 5px 0;'> If file is in local file system, function uses teradataml read_csv. Users have to remove Placeholders in the converted file. teradataml read_csv arguments are accepted as options. Header is mandatory. pyspark2teradataml will not infer the schema automatically and so schema is mandatory. </li></td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="partially_supported">5</td>
+
+              <td class="partially_supported">250</td>
+              
+              <td class="partially_supported">inputCols</td>
+              
+              <td class="partially_supported">Replace following string `Specify list of column names` with list of column names manually</td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="partially_supported">6</td>
+
+              <td class="partially_supported">269</td>
+              
+              <td class="partially_supported">StandardScaler</td>
+              
+              <td class="partially_supported"><li style='margin:0 0 5px 0;'> The DataFrame accepted by StandardScaler.fit() method should have a mandatory column 'id' which should have distinct values. Create a column from function monotonically_increasing_id. Visit user guide for example. </li><li style='margin:0 0 5px 0;'> Argument 'outputCol' is not significant. 'transform()' returns all the columns which includes scaled columns. Look at the user guide for more details.  </li></td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="partially_supported">7</td>
+
+              <td class="partially_supported">269</td>
+              
+              <td class="partially_supported">inputCol</td>
+              
+              <td class="partially_supported">Replace following string `Specify list of column names` with list of column names manually</td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="notification">8</td>
+
+              <td class="notification">290</td>
+              
+              <td class="notification">randomSplit</td>
+              
+              <td class="notification">Argument 'seed' is ignored and not considered while processing.</td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="partially_supported">9</td>
+
+              <td class="partially_supported">303-304</td>
+              
+              <td class="partially_supported">featuresCol</td>
+              
+              <td class="partially_supported">Replace following string `Specify list of column names` with list of column names manually</td>
+              
+          </tr>
+        
+        <tr>      
+
+              <td class="not_supported">10</td>
+
+              <td class="not_supported">399</td>
+              
+              <td class="not_supported">RegressionMetrics</td>
+              
+              <td class="not_supported">RegressionMetrics uses RDD for evaluating the metrics. User should use RegressionEvaluator as it runs on DataFrame instead of RDD.</td>
+              
+          </tr>
+        
+                  
+        </table>
+        
+                  </div>
+              </body>
+            </html>
+        
+        
