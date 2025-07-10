@@ -16,6 +16,80 @@ Copyright 2024, Teradata. All Rights Reserved.
 * [License](#license)
 
 ## Release Notes:
+
+#### teradatamlspk 20.00.00.03
+* ##### New Features/Functionality
+  * ###### pyspark2teradataml
+    * This release has enhanced the utility `pyspark2teradataml` to convert PySpark scripts or notebooks to teradatamlspk scripts or notebooks.
+      * The utility now generates the HTML report with a split screen interface with two panes:
+        * The left pane:
+          * Displays both the original PySpark script and the converted teradatamlspk script. One can switch between the two using a dropdown menu.
+          * Color-coded bell icons are placed next to lines in the original PySpark script that require attention. Every colored bell icon signifies a different alert. Clicking a bell icon displays the details for the corresponding line's API in the right pane.
+        * The right pane:
+          * Displays important notes and instructions for the user.
+          * Displays the conversion summary by file, conversion summary by function/module.
+      * If a directory is provided as input to the utility, a single HTML file is generated with the name `<your directory name>_index.html` in the same directory with the two panes:
+        * The left pane displays a list of all scripts and notebooks in the provided directory, showing their full paths. Clicking on the filename will redirect to the corresponding file report.
+        * The right pane displays important notes and instructions for the user, and the summarized statistics from the directory.
+    * Added optional argument `interactive_mode` to ask questions during the conversion.
+    * Added optional argument `csv_report` to generate a csv file containing summary of alerts for Python script/notebook.
+    * Utility now processes notebooks also inside a directory.
+  * ###### teradatamlspk MLlib Functions
+    * `Tokenizer()` - Converts the input string to lowercase and splits it by  whitespaces
+    * `Summarizer` - Contains methods to compute statistical summaries for a column in the DataFrame.
+    * `SummaryBuilder()` - Provides a builder object to provide summary statistics about a given column.
+  * ###### teradatamlspk TeradataSession
+    * `_jsparkSession` - A new property is added to return the TeradataSession.
+    * `newSession()` - Returns the existing TeradataSession.
+    * `range()` - Creates a DataFrame with a range of numbers.
+  * ###### teradatamlspk SQLContext
+    * `newSession()` - Returns the SQLContext as existing session.
+    * `range()` - Creates a DataFrame with a range of numbers.
+  * ###### teradatamlspk TeradataContext
+    * `range()` - Creates a DataFrame with a range of numbers.
+  * ###### teradatamlspk global functions
+    * `substring_index` - Returns the substring from the string provided in the argument `str` before count occurrences of the delimiter specified in the argument `delim`.
+    * `rlike` - Returns True if the string matches the regular expression, False otherwise.
+  * ###### teradatamlspk DataFrameColumn a.k.a. ColumnExpression
+    * `DataFrameColumn.rlike()` - Returns True if the string matches the regular expression, False otherwise.
+  * ###### teradatamlspk DataFrameWriter
+    * `mode()` - Specifies the behavior when data or table already exists.
+  * ###### teradatamlspk DataFrame
+    * `approxQuantile()` - Computes the approximate quantiles of numerical columns of the DataFrame.
+
+* ##### Updates
+    * `createDataFrame()` now supports `pandas.DataFrame`, `numpy.ndarray`, `list`, and `Row` objects as input data.
+    * `register()` can also be accessed from `sqlContext.udf`.
+    * `convert_timezone()` now accepts `sourceTz` as an optional argument.
+    * `cast()` now accepts the format specifiers to convert to `TimestampType` and `TimestampNTZType`.
+    * `bin()` now accepts float values.
+    * `cbrt()`, `sqrt()`, `log()`, `log2()`, `log10()`, `acos()`, `asin()`, `atanh()`, `cot()`, `csc()`, `ln()`, `log1p()`, `sign()`, `signum()` returns None, when value in column is outside of the permitted values.
+    * `shiftright()` and `shiftleft()` now casts float values to integers before processing the function.
+    * `udf()` and `call_udf()` now raise an exception if the Column used by UDF is not present in the corresponding DataFrame.
+    * `DataFrame.fillna()` , `DataFrame.na.fill()` and `DataFrame.replace()` now ignore replacements if the provided value in the argument `value` is not compatible with the column types specified in the argument `subset`.
+    * `DataFrame.join()` and `DataFrame.crossJoin()` now raise a warning if the resultant DataFrame contains duplicate column names.
+    * `substr()` now accepts Column for arguments `pos` and `len`.
+    * `to_char()` and `to_varchar()` now accepts Column for argument `format`.
+    * `to_number()` now accepts Column for argument `format`.
+    * `to_timestamp_ltz()` and `to_timestamp_ntz()` now accepts Column for argument `format`.
+    * `like()`and `ilike()` now supports `escapeChar` argument to escape special characters in the pattern and `pattern` argument accepts Column as input.
+    * `from_utc_timestamp()` and  `to_utc_timestamp()` now accepts string value for argument `tz`.
+    * `DataFrame.cube()` and `DataFrame.rollup()` now include aggregation on the grouping column(s).
+    * `parse_url()` now supports `key` argument to extract a specific query parameter when `partToExtract` is set to "QUERY".
+    * `udf()` and `udf.register()` now supports lambda functions.
+    * `DataFrame.persist()` will now persist the DataFrame in Vantage.
+    * `count_distinct()` and `countDistinct()` accepts multiple Columns for argument `col`.
+    * `DataFrame.dtypes` will now return the data types similar to PySpark types.
+    
+* ##### Bug Fixes
+    * `bin()` now works similar to pyspark if negative values are passed as input.
+    * `params` function under ML class now returns all attributes of type `Param`.
+    * Fixed a bug in `getOrCreate()` under SparkSession and SparkContext class to enable creating or updating a SparkSession.
+    * Fixed the error messages for the unimplemented methods and attributes under ML class.
+    * Fixed a bug in `DataFrame.describe()` to return the Summary statistics of the Dataframe.
+    * Fixed a bug in `DataFrame.summary()` to return the DataFrame with the specified statistics.
+    * Fixed a bug in `concat_ws()` to return the concatenated string if argument `cols` is a list of strings.
+
 #### teradatamlspk 20.00.00.02
 * ##### New Features/Functionality
   * ###### teradatamlspk DataFrameReader
@@ -64,8 +138,8 @@ Copyright 2024, Teradata. All Rights Reserved.
               length of the array.
     * `to_varchar` - Convert col to a string based on the format.
     * `current_catalog` - Returns the current catalog. 
-    * `equal_null` - Returns same result as the EQUAL(=) operator for non-null operands, but returns true 
-                    if both are null, false if one of the them is null.
+    * `equal_null` - Returns same result as the EQUAL(=) operator for non-null operands, but returns True
+                    if both are null, False if one of the them is null.
     * `version` - Returns the teradatamlspk version.
     * `parse_url` - Extracts a part from a URL.
     * `reverse` - Returns a reversed string with reverse order of elements.
@@ -155,9 +229,9 @@ Windows        | `py -3 -m pip install --no-cache-dir -U teradatamlspk`
 
 ## Usage the `teradatamlspk` Package
 
-`teradatamlspk` has a utility `pyspark2teradataml` which accepts either PySpark script or PySpark notebook or a directory which has PySpark scripts, analyzes and generates 2 files as below:
+`teradatamlspk` has a utility `pyspark2teradataml` which accepts either PySpark script or PySpark notebook or a directory which has PySpark scripts or notebooks, analyzes and generates 2 files as below:
   1. HTML file - Created in the same directory where users PySpark script or notebook resides with name as `<your pyspark script name>_tdmlspk.html`. This file contains the script conversion report. Based on the report user can take the action on the generated scripts or notebooks.
-      - A single HTML file for directory which has PySpark scripts will be created with name `<your directory name>_tdmlspk.html`.
+      - If a directory is provided as input to the utility, a single HTML file is generated with the name `<your directory name>_index.html` in the same directory that displays a list of all scripts and notebooks in the provided directory, showing their full paths. Clicking on the filename will redirect to the corresponding file report.
   2. Python script/notebook - Created in the same directory where users PySpark script/notebook resides with name as `<your pyspark script name>_tdmlspk.py` for PySpark script or `<your pyspark script name>_tdmlspk.ipynb` for notebook, that can be run on Vantage.
       - Refer to the HTML report to understand the changes done and required to be done in the script/notebook.
     
