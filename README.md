@@ -17,6 +17,54 @@ Copyright 2024, Teradata. All Rights Reserved.
 
 ## Release Notes:
 
+#### teradatamlspk 20.00.00.04
+* ##### New Features/Functionality
+  * ###### Array Functionality - teradatamlspk now supports arrays.
+    * ###### teradatamlspk global functions
+      * `array()` - Creates an array column from one or more columns.
+      * `array_contains()` - Returns True if the array contains the specified value.
+      * `array_append()` - Appends an element to the end of an array column.
+      * `array_prepend()` - Prepends an element to the beginning of an array column.
+      * `array_size()` - Returns the size of the array column.
+      * `size()` - Returns the size of the array column.
+      * `cardinality()` - Returns the size of the array column.
+      * `get()` - Returns the element at the specified position in the array (0-based index).
+      * `element_at()` - Returns the element at the specified position in the array (1-based index).
+      * `array_min()` - Returns the minimum value in the array column.
+      * `array_max()` - Returns the maximum value in the array column.
+      * `try_element_at()` - Returns the element at the specified position in the array (1-based index).
+      * `array_agg()` - Aggregate the rows of a column into an array.
+      * `explode()` - Explodes the array column into multiple rows.
+      * `explode_outer()` - Explodes the array column into multiple rows.
+      * `posexplode()` - Explodes the array column into multiple rows with position.
+      * `posexplode_outer()` - Explodes the array column into multiple rows with position.
+      * `array_sort()` - Sorts the elements of an array in ascending order.
+      * `sort_array()` - Sorts the elements of an array in ascending or descending order.
+      * `array_join()` - Joins the elements of an array into a single string with a specified delimiter.
+      * `arrays_overlap()` - Checks if two arrays have any elements in common.
+      * `array_insert()` - Inserts an element at a specific index in an array.
+      * `array_remove()` - Removes all occurrences of a specified element from an array.
+      * `array_distinct()` - Removes duplicate elements from an array.
+      * `array_intersect()` - Returns the intersection of two arrays.
+      * `array_union()` - Returns the union of two arrays with distinct elements.
+      * `array_except()` - Returns the elements of the first array that are not in the second array.
+      * `array_compact()` - Removes null elements from an array.
+      * `array_repeat()` - Creates an array by repeating a value for a specified number of times.
+      * `array_position()` - Gets the position of an element in the array.
+      * `slice()` - Gets a subset of an array based on specified start index and length.
+      * `shuffle()` - Randomly shuffles the elements of an array.
+      * `sequence()` - Generates an array of values in a specified range with a given step.
+
+    * ###### teradatamlspk types
+      * `ArrayType()` - Array data type is now supported.
+
+  * ###### teradatamlspk global functions
+      * `make_interval()` - Makes interval from years and months or weeks, days, hours, mins and secs.
+
+* ##### Updates
+  * `concat()` now supports array columns as input.
+  * `reverse()` now supports array column as input.
+
 #### teradatamlspk 20.00.00.03
 * ##### New Features/Functionality
   * ###### pyspark2teradataml
